@@ -16,6 +16,18 @@
 #include <unistd.h>
 #include <string.h>
 
+void	ft_putstr(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	write(1, str, i);
+}
+
 int	ft_atoi(char *str)
 {
 	int	i;
@@ -62,18 +74,6 @@ void	send_signal(int pid, unsigned char character)
 		i--;
 		usleep(800);
 	}
-}
-
-void	ft_putstr(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		i++;
-	}
-	write(1, str, i);
 }
 
 int	main(int ac, char **av)

@@ -14,26 +14,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void	signal_chek(int signal)
-{
-	static unsigned char	char_atm = 0;
-	static int				index_bit = 0;
-
-	char_atm |= (signal == SIGUSR1);
-	index_bit++;
-	if (index_bit == 8)
-	{
-		if (char_atm == '\0')
-			ft_putchar('\n');
-		else
-			ft_putchar(char_atm);
-		index_bit = 0;
-		char_atm = 0;
-	}
-	else
-		char_atm <<= 1;
-}
-
 void	ft_putchar(int nb)
 {
 	write(1, &nb, 1);
@@ -69,6 +49,27 @@ void	ft_putstr(char *str)
 		i++;
 	}
 	write(1, str, i);
+}
+
+
+void	signal_chek(int signal)
+{
+	static unsigned char	char_atm = 0;
+	static int				index_bit = 0;
+
+	char_atm |= (signal == SIGUSR1);
+	index_bit++;
+	if (index_bit == 8)
+	{
+		if (char_atm == '\0')
+			ft_putchar('\n');
+		else
+			ft_putchar(char_atm);
+		index_bit = 0;
+		char_atm = 0;
+	}
+	else
+		char_atm <<= 1;
 }
 
 int	main(void)
