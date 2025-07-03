@@ -51,12 +51,12 @@ void	ft_putstr(char *str)
 	write(1, str, i);
 }
 
-
 void	signal_chek(int signal)
 {
 	static unsigned char	char_atm = 0;
 	static int				index_bit = 0;
 
+	char_atm <<= 1;
 	char_atm |= (signal == SIGUSR1);
 	index_bit++;
 	if (index_bit == 8)
@@ -68,13 +68,11 @@ void	signal_chek(int signal)
 		index_bit = 0;
 		char_atm = 0;
 	}
-	else
-		char_atm <<= 1;
 }
 
 int	main(void)
 {
-	ft_putstr("PID : ");
+	ft_putstr("PID: ");
 	ft_putnbr(getpid());
 	ft_putchar('\n');
 	signal(SIGUSR1, signal_chek);

@@ -59,31 +59,34 @@ int	ft_atoi(char *str)
 
 void	send_signal(int pid, unsigned char character)
 {
-	unsigned char	temp;
 	int				i;
+	int				bit;
+	unsigned char	c;
 
 	i = 7;
-	temp = character;
 	while (i >= 0)
 	{
-		temp = character >> i;
-		if (temp % 2 == 0)
+		bit = (character >> i) & 1;
+		c = bit + '0';
+		write(1, &c, 1);
+		if (bit == 0)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
 		i--;
 		usleep(800);
 	}
+	write(1, " ", 1);
 }
 
-int	main(int ac, char **av)
+int	main(int ac, char *av[])
 {
 	pid_t	server_pid;
 	int		i;
 
 	if (ac != 3)
 	{
-		ft_putstr("erreur pid str");
+		ft_putstr("Error. Necesita 3 argumentos.");
 		exit(0);
 	}
 	server_pid = ft_atoi(av[1]);
