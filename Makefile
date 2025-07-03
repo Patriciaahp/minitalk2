@@ -1,22 +1,33 @@
-CC = gcc
+NAME_CLIENT = client
+NAME_SERVER = server
 
 CFLAGS = -Wall -Wextra -Werror
+CC = cc
+RM = rm -f
 
-TARGETS = server client
+FILES_CLIENT = client.c
+FILES_SERVER = server.c
 
-all: $(TARGETS)
+OBJS_CLIENT = $(FILES_CLIENT:.c=.o)
+OBJS_SERVER = $(FILES_SERVER:.c=.o)
 
-server: server.o
-	$(CC) $(CFLAGS) -o server server.o
+all: $(NAME_CLIENT) $(NAME_SERVER)
 
-client: client.o
-	$(CC) $(CFLAGS) -o client client.o
+$(NAME_CLIENT): $(OBJS_CLIENT)
+	$(CC) $(CFLAGS) -o $@ $^
 
-server.o: server.c
-	$(CC) $(CFLAGS) -c server.c
+$(NAME_SERVER): $(OBJS_SERVER)
+	$(CC) $(CFLAGS) -o $@ $^
 
-client.o: client.c
-	$(CC) $(CFLAGS) -c client.c
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o $(TARGETS)
+	$(RM) $(OBJS_CLIENT) $(OBJS_SERVER)
+
+fclean: clean
+	$(RM) $(NAME_CLIENT) $(NAME_SERVER)
+
+re: fclean all
+
+.PHONY: all clean fclean re
