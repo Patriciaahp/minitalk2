@@ -53,20 +53,20 @@ void	ft_putstr(char *str)
 
 void	signal_chek(int signal)
 {
-	static unsigned char	char_atm = 0;
+	static unsigned char	c = 0;
 	static int				index_bit = 0;
 
-	char_atm <<= 1;
-	char_atm |= (signal == SIGUSR1);
+	c <<= 1;
+	c |= (signal == SIGUSR1);
 	index_bit++;
 	if (index_bit == 8)
 	{
-		if (char_atm == '\0')
+		if (c == '\0')
 			ft_putchar('\n');
 		else
-			ft_putchar(char_atm);
+			ft_putchar(c);
 		index_bit = 0;
-		char_atm = 0;
+		c = 0;
 	}
 }
 
