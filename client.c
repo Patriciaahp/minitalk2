@@ -57,26 +57,38 @@ int	ft_atoi(char *str)
 	return (res);
 }
 
+int	is_digit(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str || str[0] == '\0')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	send_signal(int pid, unsigned char character)
 {
 	int				i;
 	int				bit;
-	unsigned char	c;
 
 	i = 7;
 	while (i >= 0)
 	{
 		bit = (character >> i) & 1;
-		c = bit + '0';
-		write(1, &c, 1);
 		if (bit == 0)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
 		i--;
-		usleep(800);
+		usleep(1000);
 	}
-	write(1, " ", 1);
 }
 
 int	main(int ac, char *av[])
@@ -86,16 +98,23 @@ int	main(int ac, char *av[])
 
 	if (ac != 3)
 	{
-		ft_putstr("Error. Necesita 3 argumentos.");
+		ft_putstr("Error: Necesita 3 argumentos.");
+		exit(0);
+	}
+	if (!is_digit(av[1]))
+	{
+		ft_putstr("Error: El PID debe ser numérico.\n");
 		exit(0);
 	}
 	server_pid = ft_atoi(av[1]);
+	if (kill(server_pid, 0) == -1)
+	{
+		ft_putstr("Error: El proceso con ese PID no existe.\n");
+		exit(0);
+	}
 	i = 0;
 	while (av[2][i])
-	{
-		send_signal(server_pid, (unsigned char)av[2][i]);
-		i++;
-	}
+		send_signal(server_pid, (unsigned char)av[2][i++]);
 	send_signal(server_pid, '\0');
 	return (0);
 }
